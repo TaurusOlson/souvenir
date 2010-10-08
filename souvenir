@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Change the directory value and choose your editor
+directory=$HOME/Documents/Outlines/Souvenirs
+files=`ls $directory`
+edit=vim
+
+# Argument parser 
+
+# Print list of souvenirs
+if [[ ! $1 ]]; then
+    nb=`ls $directory | wc -l`
+    ls -lrt1 $directory
+    echo -e "\n$nb souvenirs"
+fi
+
+# Print the content of the souvenir file if it exists
+if [[ -f $directory/$1 ]]; then
+    for file in $files
+    do
+        if [[ $file == $1 ]]; then
+            cat $directory/$file
+        fi
+    done
+
+# Edit the file
+elif [[ $1 == -e ]]; then
+    for file in $files
+    do
+        if [[ $file == $2 ]]; then
+            $edit $directory/$file
+        fi
+    done
+
+# Add an existing file
+elif [[ $1 == -a && -f $2 ]]; then
+    new_souvenir=`basename $2`
+    cat $2 >> $directory/$new_souvenir
+    echo "Enjoy the new souvenir."
+    echo ";)"
+
+# Create a file
+elif [[ $1 == -a && ! -f $2 ]]; then
+    new_souvenir=$2
+    $edit $directory/$new_souvenir
+    echo "New souvenir [$new_souvenir] created."
+    echo ":)"
+fi
+
