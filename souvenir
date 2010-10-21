@@ -5,7 +5,29 @@ directory=$HOME/Documents/Outlines/Souvenirs
 files=`ls $directory`
 edit=vim
 
-# Argument parser 
+memorize() {
+    local path=$1
+    local file=`basename $path`
+    local dirname=`echo $file | awk -F'_' '{print $1}'`
+    local dirpath=$directory/$dirname
+
+    if [[ ! -d $dirpath ]]; then
+        mkdir $dirpath
+    fi
+    echo $dirpath
+}
+
+get_file_ext() {
+    echo ${1##*.}
+}
+
+get_file_basename() {
+    echo ${1%%.*}
+}
+
+
+
+# ARGUMENT PARSER 
 
 # Print list of souvenirs
 if [[ ! $1 ]]; then
@@ -18,7 +40,7 @@ fi
 if [[ -f $directory/$1 ]]; then
     for file in $files
     do
-        if [[ $file == $1 ]]; then
+        if [[ $1 == $file || $1 == ${file%%.*} ]]; then
             cat $directory/$file
         fi
     done
@@ -35,14 +57,16 @@ elif [[ $1 == -e ]]; then
 # Add an existing file
 elif [[ $1 == -a && -f $2 ]]; then
     new_souvenir=`basename $2`
-    cat $2 >> $directory/$new_souvenir
+    category=$(memorize $directory/$new_souvenir)
+    cat $2 >> $category/$new_souvenir
     echo "Enjoy the new souvenir."
     echo ";)"
 
 # Create a file
 elif [[ $1 == -a && ! -f $2 ]]; then
     new_souvenir=$2
-    $edit $directory/$new_souvenir
+    category=$(memorize $directory/$new_souvenir)
+    $edit $category/$new_souvenir
     echo "New souvenir [$new_souvenir] created."
     echo ":)"
 fi
