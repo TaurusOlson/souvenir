@@ -1,0 +1,40 @@
+## NAME
+
+souvenir -- Remember the good things 
+
+## SYNOPSIS
+
+    souvenir
+    souvenir -a file
+    souvenir -e file
+
+## DESCRIPTION
+
+souvenir is a simple command line script to store notes and ideas. It's
+basically a personal readaptation of [cheat](http://github.com/defunkt/cheat).
+
+## FILES
+
+## OPTIONS
+
+    * -a
+        Add a new souvenir 
+
+    * -e
+        Edit an existing souvenir
+
+## EXAMPLES
+
+## AUTHOR
+
+Taurus Olson
+
+## REPORTING BUGS
+
+Pull requests...
+
+## SEE ALSO
+
+[cheat](http://github.com/defunkt/cheat),
+[ch](http://github.com/visionmedia/ch), 
+[yac](http://github.com/jinzhu/yac) 
