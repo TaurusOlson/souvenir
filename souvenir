@@ -2,13 +2,13 @@
 
 # Change the directory value and choose your editor
 directory=$HOME/Documents/Outlines/Souvenirs
-files=`ls $directory`
+files=$(ls $directory)
 edit=vim
 
 memorize() {
     local path=$1
-    local file=`basename $path`
-    local dirname=`echo $file | awk -F'_' '{print $1}'`
+    local file=$(basename $path)
+    local dirname=$(echo $file | awk -F'_' '{print $1}')
     local dirpath=$directory/$dirname
 
     if [[ ! -d $dirpath ]]; then
@@ -30,8 +30,8 @@ get_file_basename() {
 # ARGUMENT PARSER 
 
 # Print list of souvenirs
-if [[ ! $1 ]]; then
-    nb=`ls $directory | wc -l`
+if [[ $# -eq 0 ]]; then
+    nb=$(ls $directory | wc -l)
     ls -lrt1 $directory
     echo -e "\n$nb souvenirs"
 fi
@@ -45,7 +45,8 @@ if [[ -f $directory/$1 ]]; then
         fi
     done
 
-# Edit the file
+# Usage: souvenir -e FILE
+# Description: Edit the file
 elif [[ $1 == -e ]]; then
     for file in $files
     do
@@ -54,7 +55,8 @@ elif [[ $1 == -e ]]; then
         fi
     done
 
-# Add an existing file
+# Usage: souvenir -a FILE
+# Description: Add an existing file
 elif [[ $1 == -a && -f $2 ]]; then
     new_souvenir=`basename $2`
     category=$(memorize $directory/$new_souvenir)
@@ -62,12 +64,17 @@ elif [[ $1 == -a && -f $2 ]]; then
     echo "Enjoy the new souvenir."
     echo ";)"
 
-# Create a file
+# Usage: 
+# Description: Create a file
 elif [[ $1 == -a && ! -f $2 ]]; then
     new_souvenir=$2
     category=$(memorize $directory/$new_souvenir)
     $edit $category/$new_souvenir
     echo "New souvenir [$new_souvenir] created."
     echo ":)"
-fi
 
+# Usage: souvenir -l SOUVENIR
+# Description: List the souvenirs memorized (the directories)
+elif [[ $1 == -l && -d $directory/$2 ]]; then
+    ls -1 $directory/$2
+fi
